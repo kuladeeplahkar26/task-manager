@@ -1,0 +1,731 @@
+/* ==========================================================================
+   Task Management / File Dashboard - Dark Mode Stylesheet
+   Follows reference screenshot aesthetics: minimal, dark charcoal, blue accent
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Variables & Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+  --bg-primary: #15161a;
+  --bg-secondary: #23252a;
+  --bg-tertiary: #2a2d34;
+  --bg-modal: #1c1d22;
+  --bg-modal-backdrop: rgba(0, 0, 0, 0.78);
+
+  --border-subtle: #2d3038;
+  --border-focus: #3b82f6;
+  --border-error: #ef4444;
+
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --text-placeholder: #737887;
+
+  --accent-primary: #2563eb;
+  --accent-primary-hover: #1d4ed8;
+  --accent-blue-link: #3b82f6;
+  --accent-blue-hover: #60a5fa;
+
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-bg-subtle: rgba(239, 68, 68, 0.12);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --transition-fast: 0.15s ease;
+  --shadow-modal: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Screen reader utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Layout Container
+   -------------------------------------------------------------------------- */
+.app-container {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 24px 28px 48px;
+}
+
+/* --------------------------------------------------------------------------
+   Top Task Creation Section
+   -------------------------------------------------------------------------- */
+.creation-section {
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.header-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.api-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.api-status-badge .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #9ca3af;
+}
+
+.api-status-badge.connected .status-dot {
+  background-color: var(--success-color);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.api-status-badge.connected {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.api-status-badge.offline .status-dot {
+  background-color: var(--danger-color);
+}
+
+.api-status-badge.offline {
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 15px;
+  padding: 13px 18px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input::placeholder {
+  color: var(--text-placeholder);
+}
+
+.form-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
+}
+
+.form-input.is-invalid {
+  border-color: var(--border-error);
+  box-shadow: 0 0 0 1px var(--border-error);
+}
+
+/* Title Input */
+.title-input {
+  height: 48px;
+}
+
+/* Description Input - Larger than title as required */
+.desc-input {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Validation Messages */
+.validation-message {
+  font-size: 13px;
+  color: var(--danger-color);
+  margin-top: 6px;
+  display: none;
+  font-weight: 500;
+}
+
+.validation-message.active {
+  display: block;
+}
+
+/* Form Actions / Create Task Button */
+.form-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent-blue-link);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.btn-secondary:hover {
+  background-color: #373b44;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-hover);
+}
+
+.btn-danger-outline {
+  background-color: transparent;
+  color: var(--danger-color);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.btn-danger-outline:hover {
+  background-color: var(--danger-bg-subtle);
+  border-color: var(--danger-color);
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-icon:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.btn-icon:focus-visible {
+  outline: 2px solid var(--accent-blue-link);
+}
+
+/* --------------------------------------------------------------------------
+   Task / File Cards Grid Section
+   Matching the reference screenshot:
+   - 6-7 cards per row on desktop
+   - 3-4 cards on tablet
+   - 1 card on mobile
+   -------------------------------------------------------------------------- */
+.dashboard-content {
+  width: 100%;
+}
+
+.tasks-grid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+/* Task Card Item */
+.task-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 104px;
+  position: relative;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.task-card:hover {
+  border-color: #3b3f49;
+}
+
+.task-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.task-card-title {
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-all;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.task-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Edit & Delete Action Buttons on Card */
+.task-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast), color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.task-card:hover .task-action-btn,
+.task-action-btn:focus-visible {
+  opacity: 1;
+}
+
+.task-action-btn.edit-btn:hover {
+  color: var(--accent-blue-hover);
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+.task-action-btn.delete-btn:hover {
+  color: var(--danger-color);
+  background-color: var(--danger-bg-subtle);
+}
+
+.task-action-btn:focus-visible {
+  outline: 2px solid var(--accent-blue-link);
+}
+
+/* Read More button */
+.task-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+}
+
+.read-more-btn {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue-link);
+  font-size: 13px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color var(--transition-fast), text-decoration var(--transition-fast);
+}
+
+.read-more-btn:hover {
+  color: var(--accent-blue-hover);
+  text-decoration: underline;
+}
+
+.read-more-btn:focus-visible {
+  outline: 2px solid var(--accent-blue-link);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-xl);
+  margin-top: 10px;
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+.empty-icon {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   Modal Components
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: var(--bg-modal-backdrop);
+  backdrop-filter: blur(2px);
+}
+
+.modal-dialog {
+  position: relative;
+  z-index: 1001;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 580px;
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalFadeIn 0.15s ease-out;
+}
+
+.confirm-dialog {
+  max-width: 440px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+  padding-right: 12px;
+}
+
+.modal-title.text-danger {
+  color: #f87171;
+}
+
+.modal-meta {
+  padding: 10px 24px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.meta-badge {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--text-muted);
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-body {
+  padding: 18px 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.modal-description {
+  color: #d1d5db;
+  font-size: 14.5px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.confirm-message {
+  color: #e5e7eb;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* --------------------------------------------------------------------------
+   Toast Notifications (Requirement 18: "Show success message")
+   -------------------------------------------------------------------------- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  min-width: 280px;
+  max-width: 400px;
+  padding: 12px 18px;
+  background-color: var(--bg-modal);
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  animation: toastSlideIn 0.2s ease-out;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.toast-success {
+  border-left-color: var(--success-color);
+}
+
+.toast.toast-danger {
+  border-left-color: var(--danger-color);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast.toast-fadeout {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Breakpoints
+   Desktop: 6-7 cards per row
+   Tablet: 3-4 cards per row
+   Mobile: 1 card per row
+   -------------------------------------------------------------------------- */
+
+/* Extra large screens: 7 cards per row (matching screenshot) */
+@media (min-width: 1440px) {
+  .tasks-grid {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+/* Desktop screens: 6 cards per row */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .tasks-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* Small desktop / Large tablet landscape: 4-5 cards per row */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .tasks-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Tablet portrait: 3-4 cards per row */
+@media (min-width: 640px) and (max-width: 899px) {
+  .app-container {
+    padding: 18px 20px 36px;
+  }
+  .tasks-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* Mobile landscape / Large phone: 2 cards per row */
+@media (min-width: 480px) and (max-width: 639px) {
+  .app-container {
+    padding: 16px 16px 32px;
+  }
+  .tasks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 479px) {
+  .app-container {
+    padding: 14px 12px 28px;
+  }
+  
+  .form-actions .btn-primary {
+    width: 100%;
+  }
+
+  .tasks-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .task-card {
+    min-height: 85px;
+  }
+
+  .modal-dialog {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  .toast-container {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+}

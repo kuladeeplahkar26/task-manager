@@ -1,0 +1,167 @@
+{
+  "info": {
+    "_postman_id": "7a35e18f-2f74-4b53-90d2-task-dashboard-collection",
+    "name": "Dark-Mode Task Dashboard API",
+    "description": "Complete REST API collection for Dark Mode Task Management Dashboard (Express + MongoDB)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        },
+        "description": "Returns backend server health status"
+      },
+      "response": []
+    },
+    {
+      "name": "2. Get All Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks"]
+        },
+        "description": "Fetch all tasks sorted newest first"
+      },
+      "response": []
+    },
+    {
+      "name": "3. Create Task (Valid)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"backend.txt\",\n  \"description\": \"Backend development notes and database migrations.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks"]
+        },
+        "description": "Create a new task in MongoDB"
+      },
+      "response": []
+    },
+    {
+      "name": "4. Create Task (Validation Failure - Empty)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"description\": \"\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks"]
+        },
+        "description": "Should fail with 400 Bad Request"
+      },
+      "response": []
+    },
+    {
+      "name": "5. Get Single Task By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/tasks/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "REPLACE_WITH_VALID_OBJECT_ID"
+            }
+          ]
+        },
+        "description": "Get complete task by its 24-character hexadecimal MongoDB ObjectId"
+      },
+      "response": []
+    },
+    {
+      "name": "6. Update Task",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"updated_backend.txt\",\n  \"description\": \"Updated backend description content\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/tasks/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "REPLACE_WITH_VALID_OBJECT_ID"
+            }
+          ]
+        },
+        "description": "Update task title and/or description in MongoDB"
+      },
+      "response": []
+    },
+    {
+      "name": "7. Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/tasks/:id",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "REPLACE_WITH_VALID_OBJECT_ID"
+            }
+          ]
+        },
+        "description": "Delete task from MongoDB"
+      },
+      "response": []
+    }
+  ]
+}

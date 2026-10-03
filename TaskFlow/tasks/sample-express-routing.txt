@@ -1,0 +1,4 @@
+Title: Master Express.js Dynamic Routing
+
+Description:
+Implement dynamic parameter routes in Express using req.params. Understand how route wildcards like /task/:filename extract parameters directly from the browser URL path. This allows individual task details to be loaded dynamically from the filesystem on demand.

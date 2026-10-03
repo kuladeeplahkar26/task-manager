@@ -1,0 +1,4 @@
+Title: Design Clean Blue & White Responsive UI
+
+Description:
+Craft an accessible, responsive user interface featuring card layouts, distinct Read More buttons, subtle shadows, and crisp typography using Plus Jakarta Sans. Ensure optimal visual presentation across mobile screens, tablets, and desktop workstations.
